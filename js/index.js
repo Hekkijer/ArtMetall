@@ -29,33 +29,29 @@ document.querySelector(".modal-window-close").addEventListener("click", () => {
 // Next 
 modalWindowNext.addEventListener("click", () => {
     if (index == 11) {
-        index = 0;
+        return;
     }
     index++;
 
     modalWindow.style.backgroundImage = `url(${document.getElementById(index).src})`;
+    slider.scrollLeft += 300;
 });
 
 // Prev
 modalWindowPrev.addEventListener("click", () => {
     if (index == 1) {
-        index = 12;
+        return;
     }
     index -= 1;
     modalWindow.style.backgroundImage = `url(${document.getElementById(index).src})`;
+    slider.scrollLeft -= 300;
 });
 
 // Gallery click
 
 const modalWindowSliderItems = document.querySelectorAll(".modal-window-slider-item img");
 
-modalWindowSliderItems.forEach((item) => {
-    item.addEventListener("mouseup", (e) => {
-        
-        modalWindow.style.backgroundImage = `url(${item.src})`;
-        index = item.id;
-    });
-});
+
 
 // Modal Window Slider
 let isDown = false;
@@ -67,40 +63,45 @@ const close = document.querySelector('.modal-window-close');
 function end() {
     isDown = false;
     slider.classList.remove('active');
+    slider.classList.remove('is-moving');
 }
 
 function start(e) {
-    console.log(e)
     isDown = true;
     slider.classList.add('active');
     
     startX = e.pageX || e.touches[0].pageX - slider.offsetLeft;
-    close.innerHTML = slider.scrollLeft;
     scrollLeft = slider.scrollLeft;
+
+
+    // Move or click
+    slider.addEventListener('mousemove', move);
+    slider.addEventListener('touchmove', move);
+
+    modalWindowSliderItems.forEach((item) => {
+        item.addEventListener("mouseup", () => {
+            isDown = false;
+            modalWindow.style.backgroundImage = `url(${item.src})`;
+            index = item.id;
+        });
+    });
 }
 
 function move(e) {
-    console.log(e)
     if(!isDown) return;
+    slider.classList.add('is-moving');
 
     e.preventDefault();
     const x = e.pageX || e.touches[0].pageX - slider.offsetLeft;
     const dist = (x - startX);
     slider.scrollLeft = scrollLeft - dist;
-    close.innerHTML = slider.scrollLeft;
 
+    // Stop scrolling
+    slider.addEventListener('mouseleave', end);
+    slider.addEventListener('mouseup', end);
+    slider.addEventListener('touchend', end);
 }
+
 
 slider.addEventListener('mousedown', start);
 slider.addEventListener('touchstart', start);
-
-slider.addEventListener('mousemove', move);
-slider.addEventListener('touchmove', move);
-
-slider.addEventListener('mouseleave', end);
-slider.addEventListener('mouseup', end);
-slider.addEventListener('touchend', end);
-
-const a = false || "beeb"
-
-console.log(a)

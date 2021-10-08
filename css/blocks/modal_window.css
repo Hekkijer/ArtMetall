@@ -65,13 +65,13 @@
     cursor: grab;
 }
 
-/* .modal-window-slider-inner.active .modal-window-slider-item::before {
+.modal-window-slider-inner.is-moving .modal-window-slider-item::before {
     position: absolute;
     content: "";
     width: 100%;
     height: 100%;
-    background-color: black;
-} */
+    background: transparent;
+}
 
 .modal-window-slider-item {
     margin-left: 40px;
