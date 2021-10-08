@@ -1,0 +1,117 @@
+.works-container {
+    padding-bottom: 100px;
+}
+
+.works-title-container {
+    padding: 100px 50px;
+    width: 500px;
+    margin: 0 auto;
+}
+
+.works-title-heading {
+    text-align: center;
+    font-size: 60px;
+}
+
+.works-gallery-container {
+    width: 100%;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+}
+
+.works-row {
+    display: flex;
+    /* background-color: red; */
+    width: 80%;
+    margin: 0 auto;
+    padding: 60px 100px;
+    justify-content: space-evenly;
+}
+
+.works-item {
+    width: 350px;
+    height: 350px;
+    background-color: white;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+
+}
+
+.works-item-top {
+    width: 100%;
+    height: 230px;
+    background-color: black;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.works-item-bottom {
+    width: 100%;
+    height: 120px;
+    background-color: grey;
+    padding: 30px;
+}
+
+.works-item-top::before {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    content: "";
+    background-color: rgba(0,0,0,.6);
+    opacity: 0;
+}
+
+.works-item:hover .works-item-top::before {
+    opacity: 1;
+    transition: .4s;
+}
+
+.works-item:hover .works-item-link-container {
+    opacity: 1;
+    transition: .4s;
+    z-index: 1;
+}
+
+.works-item-link-container {
+    opacity: 0;
+    width: 100px;
+    height: 30px;
+}
+
+.works-item-link {
+    font-size: 21px;
+    text-align: center;
+    color: white;
+}
+
+#car {
+    background-image: url("../img/car/car_thumbnail.jpg");
+}
+
+#balcony {
+    background-image: url("../img/balcony/balcony_thumbnail.jpg");
+}
+
+#grill {
+    background-image: url("../img/grill/grill_thumbnail.jpg");
+}
+
+#ladders {
+    background-image: url("../img/ladders-railings/ladders_thumbnail.jpg");
+}
+
+#furniture {
+    background-image: url("../img/pavilion-furniture/furniture_thumbnail.jpg");
+}
+
+#other {
+    background-image: url("../img/other/other_thumbnail.jpg");
+}
