@@ -1,107 +1,224 @@
 
-// Modal Window
+// Modal Window Constructor
+function galleryConstructor(type) {
+    // Container
+    const modalWindowContainer = document.createElement('div');
+    modalWindowContainer.classList.add('modal-window-container');
+    document.body.appendChild(modalWindowContainer);
+    
+    // Close button
+    const modalWindowClose = document.createElement('button');
+    modalWindowClose.classList.add('modal-window-close');
+    modalWindowClose.innerHTML = 'close';
+    modalWindowContainer.appendChild(modalWindowClose);
 
+    // Modal Window
+    const modalWindow = document.createElement('div');
+    modalWindow.classList.add('modal-window');
+    modalWindowContainer.appendChild(modalWindow);
+
+    // Next & prev buttons
+    const modalWindowPrev = document.createElement('button');
+    const modalWindowNext = document.createElement('button');
+    modalWindowPrev.classList.add('modal-window-prev');
+    modalWindowNext.classList.add('modal-window-next');
+    modalWindowPrev.innerHTML = 'prev';
+    modalWindowNext.innerHTML = 'next';
+    modalWindow.appendChild(modalWindowPrev);
+    modalWindow.appendChild(modalWindowNext);
+
+    // Slider outer & inner
+    const modalWindowSliderOuter = document.createElement('div');
+    modalWindowSliderOuter.classList.add('modal-window-slider-outer');
+    modalWindowContainer.appendChild(modalWindowSliderOuter);
+    const modalWindowSliderInner = document.createElement('div');
+    modalWindowSliderInner.classList.add('modal-window-slider-inner');
+    modalWindowSliderOuter.appendChild(modalWindowSliderInner);
+
+    // Slider items
+
+    // First item is thumbnail
+    let idCounter = 1;
+    let modalWindowSliderItem = document.createElement('div');
+    modalWindowSliderItem.classList.add('modal-window-slider-item');
+    modalWindowSliderInner.appendChild(modalWindowSliderItem);
+    let modalWindowSliderItemImg = document.createElement('img');
+    modalWindowSliderItemImg.src = `img/${type}_thumbnail.jpg`;
+    modalWindowSliderItemImg.id = idCounter;
+    modalWindowSliderItem.appendChild(modalWindowSliderItemImg);
+
+
+    // Fetch for other images 
+    fetch('/app', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ type: type }),
+    }).then((response) => {
+        return response.json();
+    }).then((data) => {
+        let images = data;
+
+        for (let i = 0; i < images.length; i++) {
+
+            idCounter++
+
+            let modalWindowSliderItem = document.createElement('div');
+            modalWindowSliderItem.classList.add('modal-window-slider-item');
+            modalWindowSliderInner.appendChild(modalWindowSliderItem);
+
+            let modalWindowSliderItemImg = document.createElement('img');
+            modalWindowSliderItemImg.src = images[i].path;
+            modalWindowSliderItemImg.classList.add(images[i].path);
+            modalWindowSliderItemImg.id = idCounter;
+            modalWindowSliderItem.appendChild(modalWindowSliderItemImg);
+        }
+    });
+        
+}
 const worksItems = document.querySelectorAll(".works-item-top");
-const modalWindowContainer = document.querySelector(".modal-window-container");
-const modalWindow = document.querySelector(".modal-window");
-const modalWindowNext = document.querySelector(".modal-window-next");
-const modalWindowPrev = document.querySelector(".modal-window-prev");
 
 
-let index = 0;
+
 
 // Open
+let actingImageId = 1;
+
 worksItems.forEach((item) => {
-    item.addEventListener("click", () => {
-        modalWindow.style.backgroundImage = `url(${document.getElementById(1).src})`;
-        index = 1;
-        modalWindowContainer.style.display = "flex";
-        document.body.style.overflow = "hidden";
+    item.addEventListener("click", () => openGallery(item.id));
+});
+
+function openGallery(item) {
+    galleryConstructor(item);
+    
+    const modalWindow = document.querySelector('.modal-window')
+    modalWindow.style.backgroundImage = `url('img/${item}_thumbnail.jpg')`;
+    document.body.style.overflow = 'hidden';
+
+
+    // Close
+    const modalWindowClose = document.querySelector('.modal-window-close');
+    modalWindowClose.addEventListener('click', closeGallery);
+
+    // Next 
+    const modalWindowNext = document.querySelector('.modal-window-next');
+    modalWindowNext.addEventListener('click', galleryNext);
+
+    // Prev
+    const modalWindowPrev = document.querySelector('.modal-window-prev');
+    modalWindowPrev.addEventListener('click', galleryPrev);
+
+    // Slider click ability
+    const modalWindowSliderItems = document.querySelectorAll('.modal-window-slider-item');
+    console.log(modalWindowSliderItems)
+    modalWindowSliderItems.forEach((item) => {
+        item.addEventListener('click', () => galleryItemClick(item));
     });
-});
+}
 
-// Close
-document.querySelector(".modal-window-close").addEventListener("click", () => {
-    modalWindowContainer.style.display = "none";
-    document.body.style.overflow = "auto";
-});
+function closeGallery() {
+    const modalWindowClose = document.querySelector('.modal-window-close');
+    modalWindowClose.removeEventListener('click', closeGallery);
 
-// Next 
-modalWindowNext.addEventListener("click", () => {
-    if (index == 11) {
-        return;
-    }
-    index++;
+    document.querySelector('.modal-window-container').remove();
+    document.body.style.overflow = 'auto';
+}
 
-    modalWindow.style.backgroundImage = `url(${document.getElementById(index).src})`;
-    slider.scrollLeft += 300;
-});
+function galleryNext() {
+    console.log("beeb")
+    let images = document.querySelectorAll('.modal-window-slider-item img');
 
-// Prev
-modalWindowPrev.addEventListener("click", () => {
-    if (index == 1) {
-        return;
-    }
-    index -= 1;
-    modalWindow.style.backgroundImage = `url(${document.getElementById(index).src})`;
-    slider.scrollLeft -= 300;
-});
+    if (actingImageId === images.length) return;
+
+    actingImageId++;
+    console.log(actingImageId)
+    const modalWindow = document.querySelector('.modal-window');
+    modalWindow.style.backgroundImage = `url(${images[actingImageId-1].src})`;
+
+}
+
+function galleryItemClick(item) {
+    const modalWindow = document.querySelector('.modal-window');
+    console.log(item)
+}
+
+
+function galleryPrev() {
+    console.log("beeb")
+    let images = document.querySelectorAll('.modal-window-slider-item img');
+
+    if (actingImageId === 1) return;
+
+    actingImageId -= 1;
+    console.log(actingImageId)
+    const modalWindow = document.querySelector('.modal-window');
+    modalWindow.style.backgroundImage = `url(${images[actingImageId-1].src})`;
+}
+
 
 // Gallery click
 
-const modalWindowSliderItems = document.querySelectorAll(".modal-window-slider-item img");
+// const modalWindowSliderItems = document.querySelectorAll(".modal-window-slider-item img");
 
 
 
 // Modal Window Slider
-let isDown = false;
-let startX;
-let scrollLeft;
-const slider = document.querySelector('.modal-window-slider-inner');
-const close = document.querySelector('.modal-window-close');
+// let isDown = false;
+// let startX;
+// let scrollLeft;
+// const slider = document.querySelector('.modal-window-slider-inner');
+// const close = document.querySelector('.modal-window-close');
 
-function end() {
-    isDown = false;
-    slider.classList.remove('active');
-    slider.classList.remove('is-moving');
-}
+// function end() {
+//     isDown = false;
+//     slider.classList.remove('is-moving');
+//     slider.classList.remove('active');
+// }
 
-function start(e) {
-    isDown = true;
-    slider.classList.add('active');
-    
-    startX = e.pageX || e.touches[0].pageX - slider.offsetLeft;
-    scrollLeft = slider.scrollLeft;
+// function start(e) {
+//     isDown = true;
+//     slider.classList.add('active');
 
-
-    // Move or click
-    slider.addEventListener('mousemove', move);
-    slider.addEventListener('touchmove', move);
-
-    modalWindowSliderItems.forEach((item) => {
-        item.addEventListener("mouseup", () => {
-            isDown = false;
-            modalWindow.style.backgroundImage = `url(${item.src})`;
-            index = item.id;
-        });
-    });
-}
-
-function move(e) {
-    if(!isDown) return;
-    slider.classList.add('is-moving');
-
-    e.preventDefault();
-    const x = e.pageX || e.touches[0].pageX - slider.offsetLeft;
-    const dist = (x - startX);
-    slider.scrollLeft = scrollLeft - dist;
-
-    // Stop scrolling
-    slider.addEventListener('mouseleave', end);
-    slider.addEventListener('mouseup', end);
-    slider.addEventListener('touchend', end);
-}
+//     startX = e.pageX || e.touches[0].pageX - slider.offsetLeft;
+//     scrollLeft = slider.scrollLeft;
 
 
-slider.addEventListener('mousedown', start);
-slider.addEventListener('touchstart', start);
+//     // Move or click
+//     slider.addEventListener('mousemove', move);
+//     slider.addEventListener('touchmove', move);
+
+//     modalWindowSliderItems.forEach((item) => {
+//         item.addEventListener("mouseup", () => {
+//             isDown = false;
+//             slider.classList.remove('active');
+            
+//             modalWindow.style.backgroundImage = `url(${item.src})`;
+//             index = item.id;
+//         });
+//     });
+// }
+
+// function move(e) {
+//     if(!isDown) return;
+//     slider.classList.add('is-moving');
+
+//     e.preventDefault();
+//     const x = e.pageX || e.touches[0].pageX - slider.offsetLeft;
+//     const dist = (x - startX);
+//     slider.scrollLeft = scrollLeft - dist;
+
+//     // Stop scrolling
+//     slider.addEventListener('mouseleave', end);
+//     slider.addEventListener('mouseup', end);
+//     slider.addEventListener('touchend', end);
+// }
+
+
+// slider.addEventListener('mousedown', start);
+// slider.addEventListener('touchstart', start);
+
+
+// Request for image
+
+

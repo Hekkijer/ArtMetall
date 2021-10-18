@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit your site</title>
+</head>
+<body>
+    <h1>Add pictures</h1>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <label for="files">Select files:</label>
+        <input type="file" name="files" multiple><br><br>
+        
+        <label for="type">Choose type</label>
+        <select name="type" id="type">
+            <option value="car">car</option>
+            <option value="grill">grill</option>
+            <option value="balcony">balcony</option>
+            <option value="ladders-railings">ladders-railings</option>
+            <option value="other">other</option>
+            <option value="pavilion-furniture">pavilion-furniture</option>
+        </select>
+        <input type="submit" value="Send"> 
+    </form>
+</body>
+</html>

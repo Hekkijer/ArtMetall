@@ -23,10 +23,22 @@
 .works-row {
     display: flex;
     /* background-color: red; */
-    width: 80%;
-    margin: 0 auto;
-    padding: 60px 100px;
-    justify-content: space-evenly;
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 50px;
+    gap: 5%;
+}
+
+@media only screen and (max-width: 1200px){
+    .works-row {
+        flex-direction: column;
+    }
+
+    .works-item {
+        margin-top: 20px;
+    }
 }
 
 .works-item {
@@ -36,7 +48,6 @@
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
-
 }
 
 .works-item-top {
@@ -93,25 +104,25 @@
 }
 
 #car {
-    background-image: url("../img/car/car_thumbnail.jpg");
+    background-image: url("../img/car_thumbnail.jpg");
 }
 
 #balcony {
-    background-image: url("../img/balcony/balcony_thumbnail.jpg");
+    background-image: url("../img/balcony_thumbnail.jpg");
 }
 
 #grill {
-    background-image: url("../img/grill/grill_thumbnail.jpg");
+    background-image: url("../img/grill_thumbnail.jpg");
 }
 
-#ladders {
-    background-image: url("../img/ladders-railings/ladders_thumbnail.jpg");
+#ladders-railings {
+    background-image: url("../img/ladders-railings_thumbnail.jpg");
 }
 
-#furniture {
-    background-image: url("../img/pavilion-furniture/furniture_thumbnail.jpg");
+#pavilion-furniture {
+    background-image: url("../img/pavilion-furniture_thumbnail.jpg");
 }
 
 #other {
-    background-image: url("../img/other/other_thumbnail.jpg");
+    background-image: url("../img/other_thumbnail.jpg");
 }
